@@ -1,15 +1,20 @@
-import { NavLink } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { NavLink } from "react-router-dom";
+import css from "./Navigation.module.css";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
-export const Navigation = () => {
+export default function Navigation() {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   return (
-    <nav>
-      <Button component={NavLink} to="/" color="inherit">
+    <nav className={css.nav}>
+      <NavLink className={css.link} to="/">
         Home
-      </Button>
-      <Button component={NavLink} to="/contacts" color="inherit">
-        Contacts
-      </Button>
+      </NavLink>
+      {isLoggedIn && (
+        <NavLink className={css.link} to="/contacts">
+          Contacts
+        </NavLink>
+      )}
     </nav>
   );
-};
+}

@@ -1,16 +1,11 @@
-import RegistrationForm from "../RegistrationForm/RegistrationForm";
-import { Box } from '@mui/material';
+import PageTitle from "../../components/PageTitle/PageTitle";
+import RegistrationForm from "../../components/RegistrationForm/RegistrationForm";
 
-const RegisterPage = () => {
+export default function RegisterPage() {
   return (
-    // <div>
-    //   <h1> </h1>
-    //   <RegistrationForm />
-    // </div>
-    <Box display="flex" justifyContent="center" mt={4}>
-    <RegistrationForm />
-  </Box>
+    <div>
+      <PageTitle>Register your account</PageTitle>
+      <RegistrationForm />
+    </div>
   );
-};
-
-export default RegisterPage;
+}

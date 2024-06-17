@@ -1,66 +1,74 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contacts/operations';
-import { TextField, Button, Box, Typography } from '@mui/material';
-import toast, { Toaster } from 'react-hot-toast';
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useId } from "react";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
+import { addContact } from "../../redux/contacts/operations";
+import { useDispatch } from "react-redux";
+import css from "./ContactForm.module.css";
 
-const ContactForm = () => {
+export default function ContactForm() {
   const dispatch = useDispatch();
-  const validationSchema = Yup.object({
+  const nameFieldId = useId();
+  const numberFieldId = useId();
+
+  const validationControl = Yup.object().shape({
     name: Yup.string()
-      .min(3, 'Minimum 3 characters')
-      .max(50, 'Maximum 50 characters')
-      .required('Required'),
+      .min(3, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
     number: Yup.string()
-      .min(3, 'Minimum 3 characters')
-      .max(50, 'Maximum 50 characters')
-      .required('Required'),
+      .min(3, "Too short")
+      .max(12, "Too long")
+      .required("Required"),
   });
 
-  return (
-    <>
-      <Toaster />
-      <Formik
-        initialValues={{ name: '', number: '' }}
-        validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          dispatch(addContact(values));
-          resetForm();
-          toast.success('Contact added successfully!');
-        }}
-      >
-        {({ handleChange, values }) => (
-          <Form>
-            <Box display="flex" flexDirection="column" alignItems="center" gap={2} maxWidth={400} mx="auto">
-              <Typography variant="h6">Add New Contact</Typography>
-              <TextField
-                id="name"
-                name="name"
-                label="Name"
-                value={values.name}
-                onChange={handleChange}
-                fullWidth
-              />
-              <ErrorMessage name="name" component="div" style={{ color: 'red' }} />
-              <TextField
-                id="number"
-                name="number"
-                label="Number"
-                value={values.number}
-                onChange={handleChange}
-                fullWidth
-              />
-              <ErrorMessage name="number" component="div" style={{ color: 'red' }} />
-              <Button type="submit" variant="contained" color="primary">
-                Add Contact
-              </Button>
-            </Box>
-          </Form>
-        )}
-      </Formik>
-    </>
-  );
-};
+  const initialContact = {
+    name: "",
+    number: "",
+  };
 
-export default ContactForm;
+  const handleSubmit = (values, actions) => {
+    dispatch(addContact(values));
+    toast("The contact has been added", {
+        style: {
+          background: "green",
+        },
+      });
+
+    actions.resetForm();
+  };
+
+  return (
+    <Formik
+      initialValues={initialContact}
+      onSubmit={handleSubmit}
+      validationSchema={validationControl}
+    >
+      <Form Form className={css.formStyle}>
+        <div className={css.fialdStyle}>
+          <label htmlFor={nameFieldId}>Name</label>
+          <Field
+            className={css.field}
+            id={nameFieldId}
+            type="text"
+            name="name"
+          />
+          <ErrorMessage className={css.err} name="name" component="span" />
+        </div>
+        <div className={css.fialdStyle}>
+          <label htmlFor={numberFieldId}>Number</label>
+          <Field
+            className={css.field}
+            id={numberFieldId}
+            type="tel"
+            name="number"
+          />
+          <ErrorMessage className={css.err} name="number" component="span" />
+        </div>
+        <button type="submit" className={css.btn}>
+          Add contact
+        </button>
+      </Form>
+    </Formik>
+  );
+}

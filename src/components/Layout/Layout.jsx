@@ -1,13 +1,11 @@
-import { Container } from '@mui/material';
-import AppBar from '../AppBar/AppBar';
+import AppBar from "../AppBar/AppBar";
+import css from "./Layout.module.css";
 
-export const Layout = ({ children }) => {
+export default function Layout({ children }) {
   return (
-    <div>
+    <div className={css.container}>
       <AppBar />
-      <Container>
-        <main>{children}</main>
-      </Container>
+      {children}
     </div>
   );
-};
+}

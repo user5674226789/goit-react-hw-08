@@ -1,12 +1,9 @@
-import { Typography, Box } from '@mui/material';
+import PageTitle from "../../components/PageTitle/PageTitle";
 
-const HomePage = () => {
+export default function HomePage() {
   return (
-    <Box textAlign="center" mt={4}>
-      <Typography variant="h3">Welcome to the Contact Book</Typography>
-      <Typography variant="body1">Manage your contacts easily and securely.</Typography>
-    </Box>
+    <div>   
+      <PageTitle>Welcome to Home Page </PageTitle>
+    </div>
   );
-};
-
-export default HomePage;
+}

@@ -1,12 +1,11 @@
-import { Box } from '@mui/material';
-import LoginForm from '../LoginForm/LoginForm';
+import LoginForm from "../../components/LoginForm/LoginForm";
+import PageTitle from "../../components/PageTitle/PageTitle";
 
-const LoginPage = () => {
+export default function LoginPage() {
   return (
-    <Box display="flex" justifyContent="center" mt={4}>
+    <div>
+      <PageTitle>Please log in</PageTitle>
       <LoginForm />
-    </Box>
+    </div>
   );
-};
-
-export default LoginPage;
+}
