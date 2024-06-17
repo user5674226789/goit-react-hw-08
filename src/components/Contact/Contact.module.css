@@ -1,29 +1,59 @@
-.fullContact{
-   display: flex;
-   padding: 10px;
-   border: 1px solid black;
-   border-radius: 5px;
-   margin: 10px;
-   justify-content: space-between;
-   align-items: center;
-   background-color: white;
+.contact {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #dadada;
+  border-radius: 6px;
+  height: 80px;
 }
 
-.contactInfo{
-   display: block;
-   gap: 10px; 
-   line-height: 1.2em;
-   font-size: large;
-   font-weight: 500;
-   width: 200px;
-}
-.btn{
-   padding: 10px;
-   background-color: #e9d8ff;
-    border: 1px solid  #a477e0;
-   border-radius: 5px;
+.contact:hover {
+  background-color: #d3d3d3;
 }
 
-.btn:hover, .btn:focus, .btn:active{
-   background-color:  rgb(251, 48, 200);
+.data {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info {
+  color: #333;
+}
+
+.button {
+  cursor: pointer;
+  border: none;
+  background-color: inherit;
+}
+
+.infoIcon {
+  fill: #2a5cd1;
+  margin-right: 5px;
+  width: 18px;
+  height: 18px;
+}
+
+.bin {
+  width: 36px;
+  height: 36px;
+  fill: #dc0007;
+}
+
+.pencil {
+  width: 36px;
+  height: 36px;
+  fill: #0080dc;
+}
+
+.pencil:hover {
+  fill: #005089;
+}
+
+.bin:hover {
+  fill: #a90006;
+}
+
+.data {
+  margin-right: auto;
 }

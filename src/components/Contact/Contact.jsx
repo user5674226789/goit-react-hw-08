@@ -1,46 +1,50 @@
-import { FaPhoneAlt } from "react-icons/fa";
-import { IoPerson } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { MdDeleteForever, MdModeEdit } from "react-icons/md";
+import { FaPhoneAlt, FaUser } from "react-icons/fa";
+import {
+  setActiveContact,
+  clearActiveContact,
+} from "../../redux/contacts/slice";
 import css from "./Contact.module.css";
-import { useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contacts/operations";
-import toast, { Toaster } from "react-hot-toast";
-// import Button from "@mui/material/Button";
+import { IconButton } from "@mui/material";
 
-export default function ContactItem({ contact: { id, name, number } }) {
+const Contact = ({ contact, modalOpenDelete }) => {
   const dispatch = useDispatch();
- 
-  const handleDelete = () => {
-    dispatch(deleteContact(id));
-    toast("The contact has been deleted");
+
+  const { id, name, number } = contact;
+
+  const isModalOpen = useSelector((state) => state.contacts.isModalOpen);
+
+  const handleEdit = () => {
+    if (!isModalOpen) {
+      dispatch(setActiveContact({ name, number, id }));
+    } else {
+      dispatch(clearActiveContact());
+    }
   };
+
+  const handleDelete = () => {
+    modalOpenDelete(id);
+  };
+
   return (
-    <div className={css.fullContact}>
-      <div className={css.contactInfo}>
-        <p>
-          <IoPerson /> {name}
+    <div className={css.contact}>
+      <div className={css.data}>
+        <p className={css.info}>
+          <FaUser className={css.infoIcon} /> {name}
         </p>
-        <p>
-          <FaPhoneAlt /> {number}
+        <p className={css.info}>
+          <FaPhoneAlt className={css.infoIcon} /> {number}
         </p>
       </div>
-
-      <button className={css.btn} onClick={handleDelete} >
-        Delete
+      <button className={css.button} type="button" onClick={handleEdit}>
+        <MdModeEdit className={css.pencil} />
       </button>
-      <Toaster
-        toastOptions={{
-          style: {
-            background: "red",
-            color: "white",
-          },
-        }}
-        containerStyle={{
-          top: 150,
-          left: 20,
-          bottom: 20,
-          right: 20,
-        }}
-      />
+      <IconButton variant="outlined" type="button" onClick={handleDelete}>
+        <MdDeleteForever className={css.bin} />
+      </IconButton>
     </div>
   );
-}
+};
+
+export default Contact;

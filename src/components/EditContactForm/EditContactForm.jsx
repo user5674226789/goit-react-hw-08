@@ -1,40 +1,58 @@
-import css from "./ContactForm.module.css";
-
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { useId } from "react";
-import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contacts/operations";
+import { useDispatch, useSelector } from "react-redux";
+import { editContact } from "../../redux/contacts/operations";
 import toast from "react-hot-toast";
 import { FeedbackSchema } from "../../validation";
-import { handleKeyPress } from "../../handleKeyPress";
 
-const ContactForm = () => {
+import css from "./EditContactForm.module.css";
+import {
+  selectActiveContact,
+  selectIsOpen,
+} from "../../redux/contacts/selectors";
+import { clearActiveContact } from "../../redux/contacts/slice";
+
+const EditContactForm = () => {
   const nameFieldId = useId();
   const phoneFieldId = useId();
 
+  const activeContact = useSelector(selectActiveContact);
+  const isOpen = useSelector(selectIsOpen);
   const dispatch = useDispatch();
 
-  return (
-    <Formik
-      initialValues={{ username: "", number: "" }}
-      validationSchema={FeedbackSchema}
-      onSubmit={(values, actions) => {
-        const newContact = {
+  const handleSubmit = (values, actions) => {
+    if (activeContact) {
+      dispatch(
+        editContact({
+          id: activeContact.id,
           name: values.username,
           number: values.number,
-        };
-        dispatch(addContact(newContact))
-          .unwrap()
-          .then(() => {
-            toast.success("Successfully add!", { position: "top-center" });
-          })
-          .catch(() => {
-            toast.error("Error, input correct data", {
-              position: "top-center",
-            });
+        })
+      )
+        .unwrap()
+        .then(() => {
+          toast.success("Successfully updated!", { position: "top-center" });
+          dispatch(clearActiveContact());
+        })
+        .catch(() => {
+          toast.error("Error, input correct data", {
+            position: "top-center",
           });
-        actions.resetForm();
+        });
+      actions.resetForm();
+    } else {
+      toast.error("No active contact selected!", { position: "top-center" });
+    }
+  };
+
+  return isOpen && activeContact ? (
+    <Formik
+      initialValues={{
+        username: activeContact.name || "",
+        number: activeContact.number || "",
       }}
+      validationSchema={FeedbackSchema}
+      onSubmit={handleSubmit}
     >
       <Form className={css.formContainer}>
         <label htmlFor={nameFieldId} className={css.label}>
@@ -61,7 +79,6 @@ const ContactForm = () => {
           <Field
             type="text"
             pattern="\d*"
-            onKeyPress={handleKeyPress}
             name="number"
             id={phoneFieldId}
             className={css.inputField}
@@ -74,11 +91,11 @@ const ContactForm = () => {
         </div>
 
         <button type="submit" className={css.submitButton}>
-          Add contact
+          Edit
         </button>
       </Form>
     </Formik>
-  );
+  ) : null;
 };
 
-export default ContactForm;
+export default EditContactForm;

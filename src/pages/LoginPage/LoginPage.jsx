@@ -1,10 +1,12 @@
+import { Helmet } from "react-helmet";
 import LoginForm from "../../components/LoginForm/LoginForm";
-import PageTitle from "../../components/PageTitle/PageTitle";
 
-export default function LoginPage() {
+export default function Login() {
   return (
     <div>
-      <PageTitle>Please log in</PageTitle>
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       <LoginForm />
     </div>
   );

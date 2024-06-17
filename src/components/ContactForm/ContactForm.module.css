@@ -1,42 +1,47 @@
-.formStyle{
-    display: block;
-    padding: 10px;
-    margin-bottom: 10px;  
-    margin-left: auto;  
-    margin-right: auto;
-    border-radius: 5px;
-    width: 300px;
-    background-color: #e9d8ff;
-   border: 1px solid  #a477e0;
+.formContainer {
+  margin-bottom: 20px;
+  background-color: #d7d7d7;
+  width: 500px;
+  height: 250px;
+  border-radius: 8px;
+  padding: 20px;
 }
 
-.fialdStyle{
-display: block;
-padding: 10px;
-
+.label {
+  display: block;
+  margin-bottom: 5px;
 }
 
-.field{
-    display: block;
-    padding: 10px;
-    width: 250px;
-    border: 1px solid #a477e0;
-    border-radius: 5px;
+.inputField {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.btn{
-    display: block;
-    padding: 10px;
-    background-color:  white;
-    border: 1px solid #a477e0;
-    border-radius: 5px;
-    margin: 0 auto;
+.wrap {
+  height: 60px;
+  margin-bottom: 5px;
 }
-.btn:hover, .btn:focus, .btn:active{
-   background-color:  rgb(98, 11, 124);
-   color: white;
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 }
-.err{
-  background-color:  rgb(251, 48, 200);
-  
+
+.submitButton {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
 }

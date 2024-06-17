@@ -1,62 +1,97 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useId } from "react";
-import * as Yup from "yup";
-import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { register } from "../../redux/auth/operations";
 import css from "./RegistrationForm.module.css";
 
-export default function RegistrationForm() {
+import { Field, Form, Formik, ErrorMessage } from "formik";
+import { useId } from "react";
+import toast from "react-hot-toast";
+import { regist } from "../../validation";
+
+const RegistrationForm = () => {
   const dispatch = useDispatch();
 
-  const validationControl = Yup.object().shape({
-    email: Yup.string()
-      .min(3, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-    password: Yup.string()
-      .min(5, "Too short")
-      .max(18, "Too long")
-      .required("Required"),
-  });
-
-  const handleSubmit = (values, actions) => {
-    dispatch(register(values))
-      .unwrap()
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-
-    actions.resetForm();
-  };
+  const nameFieldId = useId();
+  const mailFieldId = useId();
+  const passwordFieldId = useId();
 
   return (
     <Formik
-      initialValues={{
-        name: "",
-        email: "",
-        password: "",
+      initialValues={{ name: "", email: "", password: "" }}
+      validationSchema={regist}
+      onSubmit={(values, actions) => {
+        const newUser = {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        };
+        dispatch(register(newUser))
+          .unwrap()
+          .then(() => {
+            toast.success("Success!", { position: "top-center" });
+          })
+          .catch(() => {
+            toast.error("Error, input correct data", {
+              position: "top-center",
+            });
+          });
+        actions.resetForm();
       }}
-      onSubmit={handleSubmit}
     >
-      <Form className={css.form} autoComplete="off">
-        <div className={css.fialdStyle}>
-          <label className={css.label}>
-            Username
-            <Field type="text" name="name" className={css.field} />
-          </label>
-          <label className={css.label}>
-            Email
-            <Field type="email" name="email" className={css.field} />
-          </label>
-          <label className={css.label}>
-            Password
-            <Field type="password" name="password" className={css.field} />
-          </label>
-          <button type="submit" className={css.btn}>
-            Register
-          </button>
+      <Form className={css.formContainer}>
+        <label htmlFor={nameFieldId} className={css.label}>
+          Name
+        </label>
+        <div className={css.wrap}>
+          <Field
+            type="text"
+            name="name"
+            id={nameFieldId}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="name"
+            component="span"
+            className={css.errorMessage}
+          />
         </div>
+        <label htmlFor={mailFieldId} className={css.label}>
+          Email
+        </label>
+        <div className={css.wrap}>
+          <Field
+            type="email"
+            name="email"
+            id={mailFieldId}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="email"
+            component="span"
+            className={css.errorMessage}
+          />
+        </div>
+        <label htmlFor={passwordFieldId} className={css.label}>
+          Password
+        </label>
+        <div className={css.wrap}>
+          <Field
+            type="password"
+            name="password"
+            id={passwordFieldId}
+            className={css.inputField}
+          />
+          <ErrorMessage
+            name="password"
+            component="span"
+            className={css.errorMessage}
+          />
+        </div>
+        <button type="submit" className={css.submitButton}>
+          Register
+        </button>
       </Form>
     </Formik>
   );
-}
+};
+
+export default RegistrationForm;
